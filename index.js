@@ -10,5 +10,4 @@ client.on('connect', function () {
 client.on('message', function (topic, message) {
   // message is Buffer
   console.log(topic.toString()+"/"+message.toString())
-  //client.end()
 })
