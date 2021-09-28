@@ -1,0 +1,12 @@
+List of parameters
+------------------------------------------
+device_type:13
+device_id:7
+device_longitude:-74.06527519226074
+device_latitude:4.601920479606084
+device_elevation:0.0
+device_radius:0.0
+device_hide:4
+device_draw_battery:false
+device_sensor_unit_radius:20.0
+device_script_file_name:publisher.py
