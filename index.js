@@ -4,7 +4,7 @@ import server from './http-server.js'
 
 
 
-var mqtt_client  = mqtt.connect('mqtt://localhost')
+var mqtt_client  = mqtt.connect('mqtt://35.237.59.165')
 
 mqtt_client.on('connect', function () {
   mqtt_client.subscribe('AQ/+/#', function (err) {
