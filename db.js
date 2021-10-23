@@ -78,4 +78,20 @@ const storeMeasurement = function(id,variable, value) {
 
   }
 
-  export {storeMeasurement,updateConfig, getDevicesOrg, newDevice};
+  const getOrganizations = async function(){
+    const text = 'SELECT * from organization';
+    const res = await db_client.query(text);
+    return res.rows;
+
+  }
+
+  const getVariables = async function(){
+    const text = 'SELECT * from variable';
+    const res = await db_client.query(text);
+    return res.rows;
+
+  }
+
+
+
+  export {storeMeasurement,updateConfig, getDevicesOrg, newDevice, getOrganizations, getVariables};

@@ -10,7 +10,9 @@ async function saveDevice(idOrg, lat, long, type, display) {
     return await newDevice(idOrg, lat, long, type, display)
 }
 
-const Devices = function() {}
+class Devices {
+    constructor() { }
+}
 
 Devices.prototype.getDevices = getDevices
 Devices.prototype.saveDevice = saveDevice
