@@ -4,6 +4,7 @@ import url from 'url'
 import Devices from './api/device.js'
 import Organizations from './api/organization.js'
 import Variables from './api/variables.js'
+import Routes from './api/route.js'
 
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 3000
@@ -32,6 +33,15 @@ const server = http.createServer((req, res) => {
             } else if (req.method === 'POST') {
                 return handlePostVariableReq(req, res)
             }
+        case "/route":
+                if (req.method === 'GET') {
+                    return handleGetRouteReq(req, res)
+                } else if (req.method === 'POST') {
+                    return handlePostRouteReq(req, res)
+                }else if (req.method === 'PUT') {
+                    return handlePutEndRouteReq(req, res)
+                }
+                
 
             break;
 
@@ -42,7 +52,7 @@ const server = http.createServer((req, res) => {
     }
     
 })
-
+//Devices
 async function handleGetReq(req, res) {
     const { pathname, query } = url.parse(req.url)
     const { org } = qs.parse(query)
@@ -59,7 +69,7 @@ async function handlePostReq(req, res) {
     return res.end(JSON.stringify(await Devices.saveDevice(org,lat,long,type,display)))
 }
 
-
+//Organizations
 async function handleGetOrganizationReq(req, res) {
     console.log('AAA')
     const { pathname, query } = url.parse(req.url)
@@ -75,7 +85,7 @@ async function handlePostOrganizationReq(req, res) {
     return res.end(JSON.stringify(await Devices.saveDevice(org,lat,long,type,display)))
 }
 
-
+//Variables
 async function handleGetVariableReq(req, res) {
     const { pathname, query } = url.parse(req.url)
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
@@ -90,10 +100,30 @@ async function handlePostVariableReq(req, res) {
     return res.end(JSON.stringify(await Devices.saveDevice(org,lat,long,type,display)))
 }
 
+//Routes
+async function handleGetRouteReq(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    return res.end(JSON.stringify(await Variables.listVariables()))
+}
+
+async function handlePostRouteReq(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    const { device, update_frecuency } = qs.parse(query)
+    
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    return res.end(JSON.stringify(await Routes.saveRoute(device, update_frecuency)));
+}
+async function handlePutEndRouteReq(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    const { id } = qs.parse(query)
+    
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    return res.end(JSON.stringify(await Routes.endRoute(id)));
+}
 
 
-
-
+//Error 
 function handleError (res, code) { 
     res.statusCode = code 
     res.end(`{"error": "${http.STATUS_CODES[code]}"}`) 

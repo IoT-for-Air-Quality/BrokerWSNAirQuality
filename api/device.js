@@ -3,7 +3,7 @@ import {getDevicesOrg, newDevice} from '../db.js';
 
 async function getDevices(idOrg) {
     
-    return await getDevicesOrg(1);
+    return await getDevicesOrg(idOrg);
 }
 
 async function saveDevice(idOrg, lat, long, type, display) {

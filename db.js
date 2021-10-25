@@ -92,6 +92,31 @@ const storeMeasurement = function(id,variable, value) {
 
   }
 
+  //Routes
+
+  const newRoute = async function(device, update_frecuency){
+    const text = 'INSERT INTO route(device,startTimestamp,update_frecuency) VALUES($1, $2, $3) RETURNING id'
+    const values = [device, (new Date()).toISOString(), update_frecuency]
+    const res = await db_client.query(text, values)
+    return res.rows
+
+  }
+
+  const finishRoute = async function(id){
+    const text = 'UPDATE  route SET endTimestamp =$1 WHERE id= $2 RETURNING id'
+    const values = [(new Date()).toISOString(), id]
+    const res = await db_client.query(text, values)
+    return res.rows
+
+  }
+
+  const storePoint = async function(id, lat, long){
+    console.log("ef");
+    const text = 'INSERT INTO route_point(route,lat,long) VALUES($1, $2, $3) RETURNING id'
+    const values = [id, lat, long]
+    const res = await db_client.query(text, values)
+    return res.rows
+  }
 
 
-  export {storeMeasurement,updateConfig, getDevicesOrg, newDevice, getOrganizations, getVariables};
+  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute};

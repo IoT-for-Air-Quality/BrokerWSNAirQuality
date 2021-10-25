@@ -1,5 +1,5 @@
 import mqtt from 'mqtt';
-import {storeMeasurement,updateConfig} from './db.js';
+import {storeMeasurement,updateConfig, storePoint} from './db.js';
 import server from './http-server.js'
 
 
@@ -28,6 +28,9 @@ mqtt_client.on('message', function (topic, message) {
     case "Measurement":
       storeMeasurement(id, variable,message);
       break;
+    case "RoutePoint":
+        storePoint(id, message.toString().split("&")[0], message.toString().split("&")[1]);
+        break;
     case "Config":
       updateConfig(id, variable, message);
       break;
