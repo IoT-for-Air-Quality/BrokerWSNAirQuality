@@ -111,7 +111,6 @@ const storeMeasurement = function(id,variable, value) {
   }
 
   const storePoint = async function(id, lat, long){
-    console.log("ef");
     const text = 'INSERT INTO route_point(route,lat,long) VALUES($1, $2, $3) RETURNING id'
     const values = [id, lat, long]
     const res = await db_client.query(text, values)
