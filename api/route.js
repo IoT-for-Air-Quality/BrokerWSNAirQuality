@@ -1,9 +1,9 @@
 
-import {getDevicesOrg, newRoute, finishRoute } from '../db.js';
+import {getRoutesDevice, newRoute, finishRoute } from '../db.js';
 
-async function getRoute() {
+async function getRoutes(device) {
     
-    return await getDevicesOrg(1);
+    return await getRoutesDevice(device);
 }
 
 async function saveRoute(device, update_frecuency) {
@@ -18,7 +18,7 @@ class Routes {
     constructor() { }
 }
 
-Routes.prototype.getRoute= getRoute
+Routes.prototype.getRoutes= getRoutes
 Routes.prototype.saveRoute = saveRoute
 Routes.prototype.endRoute = endRoute
 

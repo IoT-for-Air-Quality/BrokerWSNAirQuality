@@ -117,5 +117,20 @@ const storeMeasurement = function(id,variable, value) {
     return res.rows
   }
 
+  const getRoutesDevice = async function(device){
+    const text = 'SELECT * from route WHERE device = $1'
+    const values = [device]
+    const res = await db_client.query(text, values)
+    const answ = [];
+    for (const value of res.rows) {
+      let text2 = 'SELECT * from route_point WHERE route = $1'
+      let values2 = [value.id]
+      let res2 = await db_client.query(text2, values2)
+      answ.push( {...value, points: res2.rows});
+    } 
+   
+    return answ
+  }
 
-  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute};
+
+  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice};

@@ -103,8 +103,9 @@ async function handlePostVariableReq(req, res) {
 //Routes
 async function handleGetRouteReq(req, res) {
     const { pathname, query } = url.parse(req.url)
+    const { device } = qs.parse(query)
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    return res.end(JSON.stringify(await Variables.listVariables()))
+    return res.end(JSON.stringify(await Routes.getRoutes(device)));
 }
 
 async function handlePostRouteReq(req, res) {
