@@ -132,5 +132,13 @@ const storeMeasurement = function(id,variable, value) {
     return answ
   }
 
+  //Measurement
 
-  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice};
+  const getMeasurements= async function(device, startDate, endDate){
+    const text = 'SELECT * from measurement WHERE device = $1 AND timestamp >= $2 AND timestamp < $3'
+    const values = [device, startDate, endDate]
+    return (await db_client.query(text, values)).rows
+  }
+
+
+  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements};

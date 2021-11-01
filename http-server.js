@@ -5,6 +5,7 @@ import Devices from './api/device.js'
 import Organizations from './api/organization.js'
 import Variables from './api/variables.js'
 import Routes from './api/route.js'
+import Measurement from './api/measurement.js';
 
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 3000
@@ -33,6 +34,15 @@ const server = http.createServer((req, res) => {
             } else if (req.method === 'POST') {
                 return handlePostVariableReq(req, res)
             }
+            break;
+
+        case "/measurement":
+            if (req.method === 'GET') {
+                return handleGetMeasurementReq(req, res)
+            } else if (req.method === 'POST') {
+                return handlePostMeasurementReq(req, res)
+            }
+            break;
         case "/route":
                 if (req.method === 'GET') {
                     return handleGetRouteReq(req, res)
@@ -41,8 +51,6 @@ const server = http.createServer((req, res) => {
                 }else if (req.method === 'PUT') {
                     return handlePutEndRouteReq(req, res)
                 }
-                
-
             break;
 
 
@@ -93,6 +101,23 @@ async function handleGetVariableReq(req, res) {
 }
 
 async function handlePostVariableReq(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    const { org, lat, long, type, display } = qs.parse(query)
+    
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    return res.end(JSON.stringify(await Devices.saveDevice(org,lat,long,type,display)))
+}
+
+
+//Measurements
+async function handleGetMeasurementReq(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    const { device, startDate, endDate } = qs.parse(query)
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    return res.end(JSON.stringify(await Measurement.listMeasurement(device,startDate,endDate)))
+}
+
+async function handlePostMeasurementReq(req, res) {
     const { pathname, query } = url.parse(req.url)
     const { org, lat, long, type, display } = qs.parse(query)
     
