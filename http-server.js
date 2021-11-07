@@ -119,10 +119,10 @@ async function handleGetMeasurementReq(req, res) {
 
 async function handlePostMeasurementReq(req, res) {
     const { pathname, query } = url.parse(req.url)
-    const { org, lat, long, type, display } = qs.parse(query)
+    const { timestamp, variable ,device, value} = qs.parse(query)
     
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    return res.end(JSON.stringify(await Devices.saveDevice(org,lat,long,type,display)))
+    return res.end(JSON.stringify(await Measurement.insertMeasurement(timestamp, variable ,device, value)))
 }
 
 //Routes

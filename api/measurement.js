@@ -1,9 +1,14 @@
 
-import {getMeasurements} from '../db.js';
+import {getMeasurements, postMeasurements} from '../db.js';
 
 async function listMeasurement(device, startDate, endDate) {
     
     return await getMeasurements(device, startDate, endDate);
+}
+
+async function insertMeasurement(timestamp, variable ,device, value) {
+    
+    return await postMeasurements(timestamp, variable ,device, value);
 }
 
 class Measurement {
@@ -11,6 +16,7 @@ class Measurement {
 }
 
 Measurement.prototype.listMeasurement = listMeasurement
+Measurement.prototype.insertMeasurement = insertMeasurement
 
 
 

@@ -146,5 +146,11 @@ const storeMeasurement = function(id,variable, value) {
     return (await db_client.query(text, values)).rows
   }
 
+  const postMeasurements = async function(timestamp,variable, device, value){
+    const text = 'INSERT INTO measurement (timestamp, variable, device, value)VALUES($1,$2,$3,$4)'
+    const values = [timestamp,variable, device, value]
+    return (await db_client.query(text, values)).rows
+  }
 
-  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements};
+
+  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements, postMeasurements};
