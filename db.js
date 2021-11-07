@@ -123,10 +123,16 @@ const storeMeasurement = function(id,variable, value) {
     const res = await db_client.query(text, values)
     const answ = [];
     for (const value of res.rows) {
+
       let text2 = 'SELECT * from route_point WHERE route = $1'
       let values2 = [value.id]
       let res2 = await db_client.query(text2, values2)
-      answ.push( {...value, points: res2.rows});
+
+      let text3 = 'SELECT * from measurement WHERE device = $1 AND timestamp >= $2 AND timestamp < $3';
+      let values3 = [device, value.starttimestamp, value.endtimestamp];
+      let res3 = await db_client.query(text3, values3)
+
+      answ.push( {...value, points: res2.rows, measurements: res3.rows});
     } 
    
     return answ
