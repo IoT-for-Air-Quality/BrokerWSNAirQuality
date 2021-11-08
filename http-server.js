@@ -79,7 +79,6 @@ async function handlePostReq(req, res) {
 
 //Organizations
 async function handleGetOrganizationReq(req, res) {
-    console.log('AAA')
     const { pathname, query } = url.parse(req.url)
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
     return res.end(JSON.stringify(await Organizations.listOrganizations()))
