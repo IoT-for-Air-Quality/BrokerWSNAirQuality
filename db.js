@@ -35,7 +35,9 @@ const storeMeasurement = function(id,variable, value) {
 
     }
     console.log(variableId)
-    let date = new Date()
+    let date = new Date();
+    //GTM-5 Bogota
+    date.setHours(date.getHours() - 5);
     let pool = new Pool(connectionData);
     pool.query(
       "INSERT INTO measurement(timestamp, variable, device, value)VALUES('"+date.toISOString()+"', '"+variableId+"', "+id+", "+value+")",

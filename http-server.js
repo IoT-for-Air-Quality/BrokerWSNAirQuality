@@ -43,6 +43,14 @@ const server = http.createServer((req, res) => {
                 return handlePostMeasurementReq(req, res)
             }
             break;
+
+        case "/file":
+            if (req.method === 'POST') {
+                
+                return handlePostFile(req, res)
+            }
+            break;
+            
         case "/route":
                 if (req.method === 'GET') {
                     return handleGetRouteReq(req, res)
@@ -122,6 +130,58 @@ async function handlePostMeasurementReq(req, res) {
     
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
     return res.end(JSON.stringify(await Measurement.insertMeasurement(timestamp, variable ,device, value)))
+}
+
+//Files
+
+function getReqData(req) {
+    return new Promise((resolve, reject) => {
+        try {
+            let body = "";
+            // listen to data sent by client
+            req.on("data", (chunk) => {
+                // append the string version to the body
+                body += chunk.toString();
+            });
+            // listen till the end
+            req.on("end", () => {
+                // send back the data
+                resolve(body);
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+async function handlePostFile(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    const { device } = qs.parse(query)
+    // var body = '';
+    let todo_data =  await getReqData(req);
+    console.log(JSON.parse(todo_data));
+    // req.on('data', function (data) {
+    //     body += data;
+
+    //     // Too much POST data, kill the connection!
+    //     // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+    //     if (body.length > 1e6)
+    //         request.connection.destroy();
+    // });
+
+    
+    // req.on('end', function () {
+    //     var post = qs.parse(body);
+    //     console.log(post);
+    //     console.log(post['a']);
+        
+    //     // use post['blah'], etc.
+    // });
+
+    
+    
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    // return res.end(JSON.stringify(await Measurement.insertMeasurement(timestamp, variable ,device, value)))
 }
 
 //Routes
