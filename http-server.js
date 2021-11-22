@@ -71,10 +71,15 @@ const server = http.createServer((req, res) => {
 //Devices
 async function handleGetReq(req, res) {
     const { pathname, query } = url.parse(req.url)
-    const { org } = qs.parse(query)
+    const { org, startDate, endDate } = qs.parse(query)
     
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    return res.end(JSON.stringify(await Devices.getDevices(org)))
+
+    if(startDate!=null){
+        return res.end(JSON.stringify(await Devices.getDevicesWithProm(org, startDate, endDate )))
+    }else{
+        return res.end(JSON.stringify(await Devices.getDevices(org)))
+    }
 }
 
 async function handlePostReq(req, res) {
@@ -159,7 +164,7 @@ async function handlePostFile(req, res) {
     const { device } = qs.parse(query)
     // var body = '';
     let todo_data =  await getReqData(req);
-    console.log(JSON.parse(todo_data));
+    // console.log(JSON.parse(todo_data));
     // req.on('data', function (data) {
     //     body += data;
 

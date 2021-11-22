@@ -72,6 +72,13 @@ const storeMeasurement = function(id,variable, value) {
 
   }
 
+  const getDevicesValues = async function(idOrganization, startDate, endDate){
+    const text = ' SELECT  device.id , AVG(measurement.value) AS promedio, variable.name , device.lat ,device.long , device.type ,device.organization, device.display FROM device INNER JOIN measurement  ON (device.id = measurement.device) INNER JOIN variable ON (measurement.variable = variable.id) WHERE (NOT (measurement.device IS NULL)) and device.organization = $1 AND timestamp >= $2 AND timestamp < $3 GROUP BY 1,3,4,5,6,7,8'
+    const values = [idOrganization, startDate, endDate]
+    const res = await db_client.query(text, values)
+    return res.rows
+  }
+
   const newDevice = async function(idOrganization, lat, long, type, display){
     const text = 'INSERT INTO device(organization,lat,long,type,display) VALUES($1, $2, $3, $4, $5) RETURNING id'
     const values = [idOrganization, lat,long,type,display]
@@ -155,4 +162,4 @@ const storeMeasurement = function(id,variable, value) {
   }
 
 
-  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements, postMeasurements};
+  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, getDevicesValues, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements, postMeasurements};
