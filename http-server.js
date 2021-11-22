@@ -7,6 +7,8 @@ import Variables from './api/variables.js'
 import Routes from './api/route.js'
 import Measurement from './api/measurement.js';
 
+import AQ from './api/aq.js';
+
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 3000
 
@@ -59,6 +61,12 @@ const server = http.createServer((req, res) => {
                 }else if (req.method === 'PUT') {
                     return handlePutEndRouteReq(req, res)
                 }
+            break;
+
+        case "/AQ":
+                if (req.method === 'GET') {
+                    return handleGetAQReq(req, res)
+                } 
             break;
 
 
@@ -212,6 +220,13 @@ async function handlePutEndRouteReq(req, res) {
     return res.end(JSON.stringify(await Routes.endRoute(id)));
 }
 
+//AQ
+async function handleGetAQReq(req, res) {
+    const { pathname, query } = url.parse(req.url)
+    const { latitude, longitude, radius } = qs.parse(query)
+    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    return res.end(JSON.stringify(await AQ.getInfo(latitude,longitude, radius)));
+}
 
 //Error 
 function handleError (res, code) { 

@@ -161,5 +161,15 @@ const storeMeasurement = function(id,variable, value) {
     return (await db_client.query(text, values)).rows
   }
 
+  //AQ
+  const getAQInfo = async function (latitude, longitude, radius){
+    let startDate = "2020-10-27T0:25:43.511Z"
+    let endDate = "2023-10-27T0:25:43.511Z"
+    const text = 'SELECT  device.id , AVG(measurement.value) AS promedio, variable.name , 1.60934*SQRT( POW(69.1 * (device.lat  - $3), 2) + POW(69.1 * ($4 - device.long) * COS(device.lat / 57.3), 2)) AS distance, device.lat ,device.long , device.type ,device.organization, device.display FROM device INNER JOIN measurement  ON (device.id = measurement.device) INNER JOIN variable ON (measurement.variable = variable.id) WHERE (NOT (measurement.device IS NULL)) AND timestamp >= $1 AND timestamp < $2 GROUP BY 1,3,4,5,6,7,8,9'
+    const values = [ startDate, endDate, latitude, longitude]
+    const res = await db_client.query(text, values)
+    return res.rows
 
-  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, getDevicesValues, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements, postMeasurements};
+  }
+
+  export {storeMeasurement,updateConfig, storePoint, getDevicesOrg, getDevicesValues, newDevice, getOrganizations, getVariables, newRoute, finishRoute, getRoutesDevice, getMeasurements, postMeasurements, getAQInfo};
